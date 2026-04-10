@@ -63,7 +63,11 @@ const submit = async () => {
       router.push("/home");
     } else {
       isLogin.value = true;
+<<<<<<< HEAD
       error.value = "";
+=======
+      error.value = ""; // clear
+>>>>>>> e1996a4 (Feat: Update UI Login/Register)
     }
   } catch (e) {
     error.value = isLogin.value
@@ -97,7 +101,11 @@ const submit = async () => {
           <span>{{ error }}</span>
         </div>
 
+<<<<<<< HEAD
         <!-- FIRST NAME + LAST NAME -->
+=======
+        <!-- FIRST NAME + LAST NAME — chỉ hiện khi đăng ký -->
+>>>>>>> e1996a4 (Feat: Update UI Login/Register)
         <transition name="slide">
           <div v-if="!isLogin" class="flex gap-2">
             <div class="flex-1">
@@ -199,7 +207,10 @@ const submit = async () => {
   overflow: hidden;
   max-height: 100px;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> e1996a4 (Feat: Update UI Login/Register)
 .slide-enter-from,
 .slide-leave-to {
   max-height: 0;
