@@ -1,0 +1,11 @@
+const queueModel = require("../models/queue.model");
+
+class QueueService {
+  async push(job) {
+    const { type, payload } = job;
+    await queueModel.create(type, JSON.stringify(payload));
+    console.log(payload);
+  }
+}
+
+module.exports = new QueueService();
