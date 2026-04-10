@@ -64,10 +64,14 @@ const submit = async () => {
     } else {
       isLogin.value = true;
 <<<<<<< HEAD
+<<<<<<< HEAD
       error.value = "";
 =======
       error.value = ""; // clear
 >>>>>>> e1996a4 (Feat: Update UI Login/Register)
+=======
+      error.value = "";
+>>>>>>> bee8aaf (Fix: UI)
     }
   } catch (e) {
     error.value = isLogin.value
@@ -102,10 +106,14 @@ const submit = async () => {
         </div>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         <!-- FIRST NAME + LAST NAME -->
 =======
         <!-- FIRST NAME + LAST NAME — chỉ hiện khi đăng ký -->
 >>>>>>> e1996a4 (Feat: Update UI Login/Register)
+=======
+        <!-- FIRST NAME + LAST NAME -->
+>>>>>>> bee8aaf (Fix: UI)
         <transition name="slide">
           <div v-if="!isLogin" class="flex gap-2">
             <div class="flex-1">
@@ -208,9 +216,13 @@ const submit = async () => {
   max-height: 100px;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> e1996a4 (Feat: Update UI Login/Register)
+=======
+
+>>>>>>> bee8aaf (Fix: UI)
 .slide-enter-from,
 .slide-leave-to {
   max-height: 0;
