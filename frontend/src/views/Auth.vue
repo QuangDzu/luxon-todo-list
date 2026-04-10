@@ -63,7 +63,7 @@ const submit = async () => {
       router.push("/home");
     } else {
       isLogin.value = true;
-      error.value = ""; // clear
+      error.value = "";
     }
   } catch (e) {
     error.value = isLogin.value
@@ -97,7 +97,7 @@ const submit = async () => {
           <span>{{ error }}</span>
         </div>
 
-        <!-- FIRST NAME + LAST NAME — chỉ hiện khi đăng ký -->
+        <!-- FIRST NAME + LAST NAME -->
         <transition name="slide">
           <div v-if="!isLogin" class="flex gap-2">
             <div class="flex-1">
@@ -199,6 +199,7 @@ const submit = async () => {
   overflow: hidden;
   max-height: 100px;
 }
+
 .slide-enter-from,
 .slide-leave-to {
   max-height: 0;

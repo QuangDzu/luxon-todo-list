@@ -30,7 +30,7 @@ const editingId = ref(null);
 const editingText = ref("");
 
 const startEdit = (task) => {
-  if (task.done) return; // không cho sửa task đã hoàn thành
+  if (task.done) return;
   editingId.value = task.id;
   editingText.value = task.text;
 };
