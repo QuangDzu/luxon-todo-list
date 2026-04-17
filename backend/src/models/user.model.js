@@ -1,10 +1,24 @@
 const pool = require("../config/database");
 
 class User {
-  async findAll(limit, offset) {
+  async findAll(limit, offset, filters = {}) {
+    const queryStr = Object.entries(filters)
+      .filter(([_, value]) => value !== void 0)
+      .map(([key, value]) => {
+        value = typeof value === "number" ? value : `"${value}"`;
+        return `${key} = ${value}`;
+      })
+      .join(" AND ");
+    console.log(queryStr);
+
     const [rows] = await pool.query(
-      `SELECT * FROM users LIMIT ${limit} OFFSET ${offset};`,
+      `SELECT * FROM users ${queryStr ? ` WHERE ${queryStr}` : ""} LIMIT ${limit} OFFSET ${offset};`,
     );
+
+    console.log(
+      `SELECT * FROM posts ${queryStr ? `where ${queryStr}` : ""} LIMIT ${limit} OFFSET ${offset};`,
+    );
+
     return rows;
   }
 
@@ -37,6 +51,61 @@ class User {
       `INSERT INTO users (email, password) VALUES ("${email}", "${password}");`,
     );
     return insertId;
+  }
+
+  async createNewUser(
+    email,
+    password,
+    first_name = null,
+    last_name = null,
+    role = "user",
+  ) {
+    const [{ insertId }] = await pool.query(
+      `INSERT INTO users (email, password, first_name, last_name, role) 
+     VALUES (?, ?, ?, ?, ?)`,
+      [email, password, first_name, last_name, role],
+    );
+    return insertId;
+  }
+
+  async update(id, data) {
+    const { first_name, last_name, email, role } = data;
+
+    let updates = [];
+    let params = [];
+
+    if (first_name !== undefined) {
+      updates.push("first_name = ?");
+      params.push(first_name);
+    }
+    if (last_name !== undefined) {
+      updates.push("last_name = ?");
+      params.push(last_name);
+    }
+    if (email !== undefined) {
+      updates.push("email = ?");
+      params.push(email);
+    }
+    if (role !== undefined) {
+      updates.push("role = ?");
+      params.push(role);
+    }
+
+    if (updates.length === 0) return 0;
+
+    const query = `UPDATE users SET ${updates.join(", ")} WHERE id = ?`;
+    params.push(id);
+
+    const [{ affectedRows }] = await pool.query(query, params);
+    return affectedRows;
+  }
+
+  async delete(id) {
+    const [{ affectedRows }] = await pool.query(
+      `DELETE FROM users WHERE id = ?`,
+      [id],
+    );
+    return affectedRows;
   }
 
   async findByEmail(email) {

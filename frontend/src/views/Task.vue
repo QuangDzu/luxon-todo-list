@@ -1,80 +1,3 @@
-<script setup>
-import { computed, onMounted, ref } from "vue";
-import axios from "../api/axios";
-
-const tasks = ref([]);
-const input = ref("");
-
-// ===== FETCH =====
-const fetchTasks = async () => {
-  const res = await axios.get("/tasks");
-
-  console.log(res);
-
-  tasks.value = res.data.data.map((task) => ({
-    ...task,
-    done: task.done === "true",
-  }));
-};
-
-// ===== ADD =====
-const addTask = async () => {
-  if (!input.value.trim()) return;
-  await axios.post("/tasks", { text: input.value });
-  input.value = "";
-  fetchTasks();
-};
-
-// ===== EDIT =====
-const editingId = ref(null);
-const editingText = ref("");
-
-const startEdit = (task) => {
-  if (task.done) return;
-  editingId.value = task.id;
-  editingText.value = task.text;
-};
-
-const confirmEdit = async (task) => {
-  if (!editingText.value.trim() || editingText.value === task.text) {
-    cancelEdit();
-    return;
-  }
-  await axios.put(`/tasks/${task.id}`, { text: editingText.value });
-  cancelEdit();
-  fetchTasks();
-};
-
-const cancelEdit = () => {
-  editingId.value = null;
-  editingText.value = "";
-};
-
-// ===== TOGGLE =====
-const toggleTask = async (task) => {
-  await axios.patch(`/tasks/${task.id}/toggle`);
-  fetchTasks();
-};
-
-// ===== DELETE =====
-const deleteTask = async (id) => {
-  await axios.delete(`/tasks/${id}`);
-  fetchTasks();
-};
-
-// ===== COMPUTED =====
-const doneCount = computed(() => tasks.value.filter((t) => t.done).length);
-const progress = computed(() =>
-  tasks.value.length ? (doneCount.value / tasks.value.length) * 100 : 0,
-);
-
-onMounted(fetchTasks);
-
-const vFocus = {
-  mounted: (el) => el.focus(),
-};
-</script>
-
 <template>
   <div class="min-h-screen bg-orange-50 p-6">
     <div
@@ -175,3 +98,80 @@ const vFocus = {
     </div>
   </div>
 </template>
+
+<script setup>
+import { computed, onMounted, ref } from "vue";
+import axios from "../api/axios";
+
+const tasks = ref([]);
+const input = ref("");
+
+// ===== FETCH =====
+const fetchTasks = async () => {
+  const res = await axios.get("/tasks");
+
+  console.log(res);
+
+  tasks.value = res.data.data.map((task) => ({
+    ...task,
+    done: task.done === "true",
+  }));
+};
+
+// ===== ADD =====
+const addTask = async () => {
+  if (!input.value.trim()) return;
+  await axios.post("/tasks", { text: input.value });
+  input.value = "";
+  fetchTasks();
+};
+
+// ===== EDIT =====
+const editingId = ref(null);
+const editingText = ref("");
+
+const startEdit = (task) => {
+  if (task.done) return;
+  editingId.value = task.id;
+  editingText.value = task.text;
+};
+
+const confirmEdit = async (task) => {
+  if (!editingText.value.trim() || editingText.value === task.text) {
+    cancelEdit();
+    return;
+  }
+  await axios.put(`/tasks/${task.id}`, { text: editingText.value });
+  cancelEdit();
+  fetchTasks();
+};
+
+const cancelEdit = () => {
+  editingId.value = null;
+  editingText.value = "";
+};
+
+// ===== TOGGLE =====
+const toggleTask = async (task) => {
+  await axios.patch(`/tasks/${task.id}/toggle`);
+  fetchTasks();
+};
+
+// ===== DELETE =====
+const deleteTask = async (id) => {
+  await axios.delete(`/tasks/${id}`);
+  fetchTasks();
+};
+
+// ===== COMPUTED =====
+const doneCount = computed(() => tasks.value.filter((t) => t.done).length);
+const progress = computed(() =>
+  tasks.value.length ? (doneCount.value / tasks.value.length) * 100 : 0,
+);
+
+onMounted(fetchTasks);
+
+const vFocus = {
+  mounted: (el) => el.focus(),
+};
+</script>

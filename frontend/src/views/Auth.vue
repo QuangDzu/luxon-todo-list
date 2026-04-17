@@ -1,83 +1,3 @@
-<script setup>
-import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
-import axios from "../api/axios";
-
-const email = ref("");
-const password = ref("");
-const firstName = ref("");
-const lastName = ref("");
-const isLogin = ref(true);
-const loading = ref(false);
-const error = ref("");
-
-const router = useRouter();
-
-const title = computed(() => (isLogin.value ? "Đăng nhập" : "Tạo tài khoản"));
-const subtitle = computed(() =>
-  isLogin.value ? "Welcome back developer 🚀" : "Bắt đầu hành trình của bạn ✨",
-);
-
-const isFormValid = computed(() => {
-  if (!email.value || !password.value) return false;
-  if (!isLogin.value && (!firstName.value || !lastName.value)) return false;
-  return true;
-});
-
-const switchMode = () => {
-  isLogin.value = !isLogin.value;
-  error.value = "";
-  email.value = "";
-  password.value = "";
-  firstName.value = "";
-  lastName.value = "";
-};
-
-const submit = async () => {
-  error.value = "";
-
-  if (!isFormValid.value) {
-    error.value = "Vui lòng nhập đầy đủ thông tin";
-    return;
-  }
-
-  try {
-    loading.value = true;
-
-    const url = isLogin.value ? "/auth/login" : "/auth/register";
-    const payload = isLogin.value
-      ? { email: email.value, password: password.value }
-      : {
-          email: email.value,
-          password: password.value,
-          first_name: firstName.value,
-          last_name: lastName.value,
-        };
-
-    const res = await axios.post(url, payload);
-
-    if (isLogin.value) {
-      const token =
-        res.data.access_token ?? res.data.token ?? res.data.data?.access_token;
-      localStorage.setItem("token", token);
-      router.push("/home");
-    } else {
-      isLogin.value = true;
-
-      error.value = "";
-
-      error.value = "";
-    }
-  } catch (e) {
-    error.value = isLogin.value
-      ? "Sai email hoặc mật khẩu"
-      : "Email đã tồn tại hoặc có lỗi xảy ra";
-  } finally {
-    loading.value = false;
-  }
-};
-</script>
-
 <template>
   <div
     class="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 to-orange-300 p-4"
@@ -208,3 +128,83 @@ const submit = async () => {
   opacity: 0;
 }
 </style>
+
+<script setup>
+import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
+import axios from "../api/axios";
+
+const email = ref("");
+const password = ref("");
+const firstName = ref("");
+const lastName = ref("");
+const isLogin = ref(true);
+const loading = ref(false);
+const error = ref("");
+
+const router = useRouter();
+
+const title = computed(() => (isLogin.value ? "Đăng nhập" : "Tạo tài khoản"));
+const subtitle = computed(() =>
+  isLogin.value ? "Welcome back developer 🚀" : "Bắt đầu hành trình của bạn ✨",
+);
+
+const isFormValid = computed(() => {
+  if (!email.value || !password.value) return false;
+  if (!isLogin.value && (!firstName.value || !lastName.value)) return false;
+  return true;
+});
+
+const switchMode = () => {
+  isLogin.value = !isLogin.value;
+  error.value = "";
+  email.value = "";
+  password.value = "";
+  firstName.value = "";
+  lastName.value = "";
+};
+
+const submit = async () => {
+  error.value = "";
+
+  if (!isFormValid.value) {
+    error.value = "Vui lòng nhập đầy đủ thông tin";
+    return;
+  }
+
+  try {
+    loading.value = true;
+
+    const url = isLogin.value ? "/auth/login" : "/auth/register";
+    const payload = isLogin.value
+      ? { email: email.value, password: password.value }
+      : {
+          email: email.value,
+          password: password.value,
+          first_name: firstName.value,
+          last_name: lastName.value,
+        };
+
+    const res = await axios.post(url, payload);
+
+    if (isLogin.value) {
+      const token =
+        res.data.access_token ?? res.data.token ?? res.data.data?.access_token;
+      localStorage.setItem("token", token);
+      router.push("/dashboard");
+    } else {
+      isLogin.value = true;
+
+      error.value = "";
+
+      error.value = "";
+    }
+  } catch (e) {
+    error.value = isLogin.value
+      ? "Sai email hoặc mật khẩu"
+      : "Email đã tồn tại hoặc có lỗi xảy ra";
+  } finally {
+    loading.value = false;
+  }
+};
+</script>
