@@ -6,29 +6,8 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Modules\User\src\Repositories\UserRepository;
-use Modules\Video\src\Repositories\VideoRepository;
-use Modules\Orders\src\Repositories\OrdersRepository;
-use Modules\Courses\src\Repositories\CoursesRepository;
-use Modules\Lessons\src\Repositories\LessonsRepository;
-use Modules\Students\src\Repositories\CouponRepository;
-use Modules\Teacher\src\Repositories\TeacherRepository;
-use Modules\Document\src\Repositories\DocumentRepository;
-use Modules\Students\src\Repositories\StudentsRepository;
 use Modules\Auth\src\Http\Middlewares\BlockUserMiddleware;
-use Modules\User\src\Repositories\UserRepositoryInterface;
-use Modules\Orders\src\Repositories\OrdersStatusRepository;
-use Modules\Video\src\Repositories\VideoRepositoryInterface;
-use Modules\Categories\src\Repositories\CategoriesRepository;
-use Modules\Orders\src\Repositories\OrdersRepositoryInterface;
-use Modules\Courses\src\Repositories\CoursesRepositoryInterface;
-use Modules\Lessons\src\Repositories\LessonsRepositoryInterface;
-use Modules\Students\src\Repositories\CouponRepositoryInterface;
-use Modules\Teacher\src\Repositories\TeacherRepositoryInterface;
-use Modules\Document\src\Repositories\DocumentRepositoryInterface;
-use Modules\Students\src\Repositories\StudentsRepositoryInterface;
-use Modules\Orders\src\Repositories\OrdersStatusRepositoryInterface;
-use Modules\Categories\src\Repositories\CategoriesRepositoryInterface;
+
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -38,75 +17,7 @@ class ModuleServiceProvider extends ServiceProvider
 
     private $commands = [];
 
-    public function bindingRepository()
-    {
-
-        //User Repository
-        $this->app->singleton(
-            UserRepositoryInterface::class,
-            UserRepository::class
-        );
-
-        //Categories Repository
-        $this->app->singleton(
-            CategoriesRepositoryInterface::class,
-            CategoriesRepository::class
-        );
-
-        //Courses Repository
-        $this->app->singleton(
-            CoursesRepositoryInterface::class,
-            CoursesRepository::class
-        );
-
-        //Teacher Repository
-        $this->app->singleton(
-            TeacherRepositoryInterface::class,
-            TeacherRepository::class
-        );
-
-        //Video Repository
-        $this->app->singleton(
-            VideoRepositoryInterface::class,
-            VideoRepository::class
-        );
-
-        //Document Repository
-        $this->app->singleton(
-            DocumentRepositoryInterface::class,
-            DocumentRepository::class
-        );
-
-        //Lesson Repository
-        $this->app->singleton(
-            LessonsRepositoryInterface::class,
-            LessonsRepository::class
-        );
-
-        //Students Repository
-        $this->app->singleton(
-            StudentsRepositoryInterface::class,
-            StudentsRepository::class
-        );
-
-        //Orders Repository
-        $this->app->singleton(
-            OrdersRepositoryInterface::class,
-            OrdersRepository::class
-        );
-
-        //Orders Status Repository
-        $this->app->singleton(
-            OrdersStatusRepositoryInterface::class,
-            OrdersStatusRepository::class
-        );
-
-        //Coupon Repository
-        $this->app->singleton(
-            CouponRepositoryInterface::class,
-            CouponRepository::class
-        );
-    }
+    public function bindingRepository() {}
 
     public function boot()
     {
